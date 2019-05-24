@@ -6,9 +6,9 @@ public class SaveQueueSystemRequest {
     private  long idQueueSystem;//idnovbe sistemi
     private Date enteredDate;
     private long idProtocol;
-    private long idDeparment;
+    private long idDepartment;
     private long idPersonal;
-    private long QueueNo;//sira nomresi
+    private long queueNo;//sira nomresi
 
     public SaveQueueSystemRequest() {
     }
@@ -19,9 +19,9 @@ public class SaveQueueSystemRequest {
                 "idQueueSystem=" + idQueueSystem +
                 ", enteredDate=" + enteredDate +
                 ", idProtocol=" + idProtocol +
-                ", idDeparment=" + idDeparment +
+                ", idDepartment=" + idDepartment +
                 ", idPersonal=" + idPersonal +
-                ", QueueNo=" + QueueNo +
+                ", queueNo=" + queueNo +
                 '}';
     }
 
@@ -49,12 +49,12 @@ public class SaveQueueSystemRequest {
         this.idProtocol = idProtocol;
     }
 
-    public long getIdDeparment() {
-        return idDeparment;
+    public long getIdDepartment() {
+        return idDepartment;
     }
 
-    public void setIdDeparment(long idDeparment) {
-        this.idDeparment = idDeparment;
+    public void setIdDepartment(long idDepartment) {
+        this.idDepartment = idDepartment;
     }
 
     public long getIdPersonal() {
@@ -66,19 +66,19 @@ public class SaveQueueSystemRequest {
     }
 
     public long getQueueNo() {
-        return QueueNo;
+        return queueNo;
     }
 
     public void setQueueNo(long queueNo) {
-        QueueNo = queueNo;
+        this.queueNo = queueNo;
     }
 
-    public SaveQueueSystemRequest(long idQueueSystem, Date enteredDate, long idProtocol, long idDeparment, long idPersonal, long queueNo) {
+    public SaveQueueSystemRequest(long idQueueSystem, Date enteredDate, long idProtocol, long idDepartment, long idPersonal, long queueNo) {
         this.idQueueSystem = idQueueSystem;
         this.enteredDate = enteredDate;
         this.idProtocol = idProtocol;
-        this.idDeparment = idDeparment;
+        this.idDepartment = idDepartment;
         this.idPersonal = idPersonal;
-        QueueNo = queueNo;
+        this.queueNo = queueNo;
     }
 }

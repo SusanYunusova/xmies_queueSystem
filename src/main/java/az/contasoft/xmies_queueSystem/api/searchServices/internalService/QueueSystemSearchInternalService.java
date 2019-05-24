@@ -1,6 +1,7 @@
 package az.contasoft.xmies_queueSystem.api.searchServices.internalService;
 
 
+import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseQueueCount;
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchListQueueSystem;
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchQueueSystem;
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
@@ -39,7 +40,7 @@ public class QueueSystemSearchInternalService {
         try {
             List<QueueSystem> queueSystemList = repoQueueSystem.findAll();
 
-            if (queueSystemList == null ) {
+            if (queueSystemList == null||queueSystemList.isEmpty() ) {
                 responseSearchListQueueSystem.setQueueSystemList(null);
                 responseSearchListQueueSystem.setServerCode(210);
                 responseSearchListQueueSystem.setServerMessage("responseSearchListQueueSystem not found");
@@ -98,25 +99,25 @@ public class QueueSystemSearchInternalService {
      * @param idProtocol
      * @return
      */
-    public ResponseSearchQueueSystem getByIdProtocol(long idProtocol) {
-        QueueSystem findByIdProtocol = repoQueueSystem.findByIdProtocol(idProtocol);
+    public ResponseSearchListQueueSystem getAllByIdProtocol(long idProtocol) {
+        List<QueueSystem> findByIdProtocol = repoQueueSystem.findAllByIdProtocol(idProtocol);
 
-        ResponseSearchQueueSystem responseSearchQueueSystem1 = new ResponseSearchQueueSystem();
+        ResponseSearchListQueueSystem responseSearchQueueSystem = new ResponseSearchListQueueSystem();
 
-        if (findByIdProtocol == null) {
-            responseSearchQueueSystem1.setQueueSystem(null);
-            responseSearchQueueSystem1.setServerCode(100);
-            responseSearchQueueSystem1.setServerMessage("getByByIdProtocol  search");
+        if (findByIdProtocol == null||findByIdProtocol.isEmpty()) {
+            responseSearchQueueSystem.setQueueSystemList(null);
+            responseSearchQueueSystem.setServerCode(100);
+            responseSearchQueueSystem.setServerMessage("getByByIdProtocol  search");
 
-            logger.info("getByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem1.toString());
+            logger.info("getByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
 
         } else {
-            responseSearchQueueSystem1.setQueueSystem(findByIdProtocol);
-            responseSearchQueueSystem1.setServerCode(200);
-            responseSearchQueueSystem1.setServerMessage(" getByByIdProtocol found");
-            logger.info("Error getByByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem1.toString());
+            responseSearchQueueSystem.setQueueSystemList(findByIdProtocol);
+            responseSearchQueueSystem.setServerCode(200);
+            responseSearchQueueSystem.setServerMessage(" getByByIdProtocol found");
+            logger.info("Error getByByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
         }
-        return responseSearchQueueSystem1;
+        return responseSearchQueueSystem;
     }
 
         /**
@@ -124,20 +125,20 @@ public class QueueSystemSearchInternalService {
          * @param idPersonal
          * @return
          */
-        public ResponseSearchQueueSystem getByIdPersonal(long idPersonal){
-            QueueSystem findByIdPersonal = repoQueueSystem.findByIdPersonal(idPersonal);
+        public ResponseSearchListQueueSystem getAllByIdPersonal(long idPersonal){
+            List<QueueSystem> findByIdPersonal = repoQueueSystem.findAllByIdPersonal(idPersonal);
 
-            ResponseSearchQueueSystem responseSearchQueueSystem = new ResponseSearchQueueSystem();
+            ResponseSearchListQueueSystem responseSearchQueueSystem = new ResponseSearchListQueueSystem();
 
-            if (findByIdPersonal == null) {
-                responseSearchQueueSystem.setQueueSystem(null);
+            if (findByIdPersonal == null||findByIdPersonal.isEmpty()) {
+                responseSearchQueueSystem.setQueueSystemList(null);
                 responseSearchQueueSystem.setServerCode(100);
-                responseSearchQueueSystem.setServerMessage("getByIdPersonal  search");
+                responseSearchQueueSystem.setServerMessage("getIdPersonal not found");
 
                 logger.info("getByIdPersonal responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
 
             } else {
-                responseSearchQueueSystem.setQueueSystem(findByIdPersonal);
+                responseSearchQueueSystem.setQueueSystemList(findByIdPersonal);
                 responseSearchQueueSystem.setServerCode(200);
                 responseSearchQueueSystem.setServerMessage(" getByIdPersonal found");
                 logger.info("Error getByIdPersonal responseSearchQueueSystem : {}", responseSearchQueueSystem.toString());
@@ -146,7 +147,19 @@ public class QueueSystemSearchInternalService {
         }
 
 
+    public ResponseQueueCount getCount(long idPersonal) {
+        ResponseQueueCount response = new ResponseQueueCount();
+        response.setServerCode(200);
+        response.setServerMessage("ok");
+        int count = repoQueueSystem.countByStatusAndIdPersonal(1, idPersonal);
+        if(count==0){
+            response.setCount(0);
+        }else{
+            response.setCount(count);
+        }
+            return response;
     }
+}
 
 
 

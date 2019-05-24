@@ -27,23 +27,30 @@ public class QueueSystemCrudInternalService {
 
 
             queueSystem.setEnteredDate(saveQueueSystemRequest.getEnteredDate());
-            queueSystem.setIdDeparment(saveQueueSystemRequest.getIdDeparment());
+            queueSystem.setIdDepartment(saveQueueSystemRequest.getIdDepartment());
             queueSystem.setIdPersonal(saveQueueSystemRequest.getIdPersonal());
             queueSystem.setIdProtocol(saveQueueSystemRequest.getIdProtocol());
-            queueSystem.setQueueNo(saveQueueSystemRequest.getQueueNo());
-
-
+            queueSystem.setStatus(1);
+            QueueSystem queueSystemLast = repoQueueSystem.findTopByStatusAndIdPersonalOrderByIdQueueSystemDesc(1,saveQueueSystemRequest.getIdPersonal());
+//todo mellim verenin ustune 1 gelib sonra save edirik
+            if(queueSystemLast!=null) {
+                queueSystem.setQueueNo(queueSystemLast.getQueueNo() + 1);
+            }else{
+                queueSystem.setQueueNo(1);
+            }
             queueSystem = repoQueueSystem.save(queueSystem);
+            queueSystemResponse.setQueueSystem(queueSystem);
 
 
             queueSystemResponse.setServerCode(200);
             queueSystemResponse.setServerMessage("OK");
-            queueSystemResponse.setQueueSystem(queueSystem);
             logger.info("saveQueueSystem response : {}", saveQueueSystemRequest.toString());
+
+
         } catch (Exception e) {
             queueSystemResponse.setServerCode(100);
             queueSystemResponse.setServerMessage("error");
-            logger.error("Error save file text : {}", e);
+            logger.error("Error save file text :{}",e);
         }
         return queueSystemResponse;
     }
@@ -60,17 +67,18 @@ public class QueueSystemCrudInternalService {
                 queue.setQueueNo(updateQueueSystemRequest.getQueueNo());
                 queue.setIdProtocol(updateQueueSystemRequest.getIdProtocol());
                 queue.setIdPersonal(updateQueueSystemRequest.getIdPersonal());
-                queue.setIdDeparment(updateQueueSystemRequest.getIdDeparment());
+                queue.setIdDepartment(updateQueueSystemRequest.getIdDeparment());
                 queue.setEnteredDate(updateQueueSystemRequest.getEnteredDate());
 
                 queue = repoQueueSystem.save(queue);
+                queueSystemResponse.setQueueSystem(queue);
+
                 queueSystemResponse.setServerCode(200);
                 queueSystemResponse.setServerMessage("OK");
-                queueSystemResponse.setQueueSystem(queue);
                 logger.info("updateQueue response : {}", updateQueueSystemRequest.toString());
             } else {
-                queueSystemResponse.setServerCode(200);
-                queueSystemResponse.setServerMessage("OK");
+                queueSystemResponse.setServerCode(210);
+                queueSystemResponse.setServerMessage("null");
                 logger.info("updateQueueSystem response : {}", queueSystemResponse.toString());
             }
         } catch (Exception e) {
@@ -82,20 +90,23 @@ public class QueueSystemCrudInternalService {
     }
 
 
-    public QueueSystemResponse deleteIdQueueSystem(long idQueueSystem, long idPersonal) {
+    public QueueSystemResponse deleteIdQueueSystem(long idQueueSystem) {
         QueueSystemResponse queueSystemResponse = new QueueSystemResponse();
         try {
-            QueueSystem queue = repoQueueSystem.findByIdQueueSystem(idQueueSystem);
+            QueueSystem queue = repoQueueSystem.findByIdQueueSystemAndStatus(idQueueSystem,0);
 
             if (queue == null) {
+
                 queueSystemResponse.setServerMessage("Queue not found");
                 queueSystemResponse.setServerCode(230);
+
+
             } else {
+                queue.setStatus(1);
+                repoQueueSystem.save(queue);
                 queueSystemResponse.setServerCode(200);
                 queueSystemResponse.setServerMessage("OK queue is deleted");
-                queue.setIsDelete(1);
-               queue= repoQueueSystem.save(queue);
-               queueSystemResponse.setQueueSystem(queue);
+
 
 
             }

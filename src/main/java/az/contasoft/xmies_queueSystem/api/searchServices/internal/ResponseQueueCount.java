@@ -1,31 +1,26 @@
 package az.contasoft.xmies_queueSystem.api.searchServices.internal;
 
-import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
-
-import java.util.List;
-
-public class ResponseSearchListQueueSystem {
+public class ResponseQueueCount {
     private int serverCode;
     private String serverMessage;
-    private List<QueueSystem> queueSystemList;
+    private int count;
 
-    public ResponseSearchListQueueSystem(int serverCode, String serverMessage, List<QueueSystem> queueSystemList) {
-
+    public ResponseQueueCount(int serverCode, String serverMessage, int count) {
         this.serverCode = serverCode;
         this.serverMessage = serverMessage;
-        this.queueSystemList = queueSystemList;
+        this.count = count;
+    }
+
+    public ResponseQueueCount() {
     }
 
     @Override
     public String toString() {
-        return "ResponseSearchListQueueSystem{" +
+        return "ResponseQueueCount{" +
                 "serverCode=" + serverCode +
                 ", serverMessage='" + serverMessage + '\'' +
-                ", queueSystemList=" + queueSystemList +
+                ", count=" + count +
                 '}';
-    }
-
-    public ResponseSearchListQueueSystem() {
     }
 
     public int getServerCode() {
@@ -44,11 +39,11 @@ public class ResponseSearchListQueueSystem {
         this.serverMessage = serverMessage;
     }
 
-    public List<QueueSystem> getQueueSystemList() {
-        return queueSystemList;
+    public int getCount() {
+        return count;
     }
 
-    public void setQueueSystemList(List<QueueSystem> queueSystemList) {
-        this.queueSystemList = queueSystemList;
+    public void setCount(int count) {
+        this.count = count;
     }
 }

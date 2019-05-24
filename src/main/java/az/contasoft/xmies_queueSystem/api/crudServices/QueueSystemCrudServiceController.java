@@ -41,9 +41,9 @@ public class QueueSystemCrudServiceController {
 //        return queueSystemCrudInternalService.deleteIdDocument(deleteDocumentRequest);
 //    }
 
-    @GetMapping("/delete/{idQueueSystem}/{idPersonal}")
-    public QueueSystemResponse deleteQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem,
-                                                 @PathVariable("idPersonal") long idPersonal) {
-        return queueSystemCrudInternalService.deleteIdQueueSystem(idQueueSystem, idPersonal);
+    @GetMapping("/delete/{idQueueSystem}")
+    public QueueSystemResponse deleteQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem){
+
+        return queueSystemCrudInternalService.deleteIdQueueSystem(idQueueSystem);
     }
 }

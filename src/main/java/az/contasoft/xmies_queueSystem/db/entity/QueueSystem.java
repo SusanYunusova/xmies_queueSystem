@@ -1,8 +1,15 @@
 package az.contasoft.xmies_queueSystem.db.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
+
+@Entity
+@Table(name = "queueSystem")
 public class QueueSystem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idQueueSystem", nullable = false, unique = true)
     /*novbe systemi
     idNovbesystemi
     girish tarixi
@@ -15,10 +22,10 @@ public class QueueSystem {
     private long idQueueSystem;//idnovbe sistemi
     private Date enteredDate;
     private long idProtocol;
-    private long idDeparment;
+    private long idDepartment;
     private long idPersonal;
-    private long QueueNo;//sira nomresi
-    private  long isDelete;
+    private long queueNo;//sira nomresi//todo sil
+    private int status;//todo status
 
     public QueueSystem() {
     }
@@ -29,10 +36,10 @@ public class QueueSystem {
                 "idQueueSystem=" + idQueueSystem +
                 ", enteredDate=" + enteredDate +
                 ", idProtocol=" + idProtocol +
-                ", idDeparment=" + idDeparment +
+                ", idDepartment=" + idDepartment +
                 ", idPersonal=" + idPersonal +
-                ", QueueNo=" + QueueNo +
-                ", isDelete=" + isDelete +
+                ", queueNo=" + queueNo +
+                ", status=" + status +
                 '}';
     }
 
@@ -60,12 +67,12 @@ public class QueueSystem {
         this.idProtocol = idProtocol;
     }
 
-    public long getIdDeparment() {
-        return idDeparment;
+    public long getIdDepartment() {
+        return idDepartment;
     }
 
-    public void setIdDeparment(long idDeparment) {
-        this.idDeparment = idDeparment;
+    public void setIdDepartment(long idDepartment) {
+        this.idDepartment = idDepartment;
     }
 
     public long getIdPersonal() {
@@ -77,29 +84,29 @@ public class QueueSystem {
     }
 
     public long getQueueNo() {
-        return QueueNo;
+        return queueNo;
     }
 
     public void setQueueNo(long queueNo) {
-        QueueNo = queueNo;
+        this.queueNo = queueNo;
     }
 
-    public long getIsDelete() {
-        return isDelete;
+    public long getStatus() {
+        return status;
     }
 
-    public void setIsDelete(long isDelete) {
-        this.isDelete = isDelete;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public QueueSystem(long idQueueSystem, Date enteredDate, long idProtocol, long idDeparment, long idPersonal, long queueNo, long isDelete) {
+    public QueueSystem(long idQueueSystem, Date enteredDate, long idProtocol, long idDepartment, long idPersonal, long queueNo, long status) {
         this.idQueueSystem = idQueueSystem;
         this.enteredDate = enteredDate;
         this.idProtocol = idProtocol;
-        this.idDeparment = idDeparment;
+        this.idDepartment = idDepartment;
         this.idPersonal = idPersonal;
-        QueueNo = queueNo;
-        this.isDelete = isDelete;
+        this.queueNo = queueNo;
+        this.status = (int) status;
     }
 }
 
