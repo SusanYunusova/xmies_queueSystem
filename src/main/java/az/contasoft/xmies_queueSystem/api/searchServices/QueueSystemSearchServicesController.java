@@ -1,17 +1,20 @@
 package az.contasoft.xmies_queueSystem.api.searchServices;
 
 
-import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseQueueCount;
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchListQueueSystem;
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchQueueSystem;
 import az.contasoft.xmies_queueSystem.api.searchServices.internalService.QueueSystemSearchInternalService;
+import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/searchServices")
@@ -40,21 +43,21 @@ public class QueueSystemSearchServicesController {
 
     }
 
-    @GetMapping("/getIdProtocol/{idProtocol}")
-    public ResponseSearchListQueueSystem getAllByIdProtocol(@PathVariable("idProtocol") long idProtocol) {
-
-        return queueSystemSearchInternalService.getAllByIdProtocol(idProtocol);
-    }
+//    @GetMapping("/getIdProtocol/{idProtocol}")
+//    public ResponseSearchListQueueSystem getAllByIdProtocol(@PathVariable("idProtocol") long idProtocol) {
+//
+//        return queueSystemSearchInternalService.getAllByIdProtocol(idProtocol);
+//    }
 
     @GetMapping("/getIdPersonal/{idPersonal}")
-    public ResponseSearchListQueueSystem getAllByIdPersonal(@PathVariable("idPersonal") long idPersonal) {
+    public ResponseEntity<List<QueueSystem>> getAllByIdPersonal(@PathVariable("idPersonal") long idPersonal) {
 
         return queueSystemSearchInternalService.getAllByIdPersonal(idPersonal);
     }
 
 
     @GetMapping("/getQueueCount/{idPersonal}")
-    public ResponseQueueCount getCount(@PathVariable("idPersonal") long idPersonal){
+    public ResponseEntity<Integer> getCount(@PathVariable("idPersonal") long idPersonal){
         return queueSystemSearchInternalService.getCount(idPersonal);
     }
 }

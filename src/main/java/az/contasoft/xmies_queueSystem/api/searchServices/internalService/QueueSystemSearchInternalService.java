@@ -9,6 +9,8 @@ import az.contasoft.xmies_queueSystem.db.repo.RepoQueueSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +33,8 @@ public class QueueSystemSearchInternalService {
  */
 
     /**
-     *     List<QueueSystem> findAll();
+     * List<QueueSystem> findAll();
+     *
      * @return ResponseSearchListQueueSystem
      */
     public ResponseSearchListQueueSystem getAll() {
@@ -40,7 +43,7 @@ public class QueueSystemSearchInternalService {
         try {
             List<QueueSystem> queueSystemList = repoQueueSystem.findAll();
 
-            if (queueSystemList == null||queueSystemList.isEmpty() ) {
+            if (queueSystemList == null || queueSystemList.isEmpty()) {
                 responseSearchListQueueSystem.setQueueSystemList(null);
                 responseSearchListQueueSystem.setServerCode(210);
                 responseSearchListQueueSystem.setServerMessage("responseSearchListQueueSystem not found");
@@ -56,19 +59,20 @@ public class QueueSystemSearchInternalService {
             return responseSearchListQueueSystem;
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.info("error getting ALL responseSearchListQueueSystem : {}", e);
             responseSearchListQueueSystem.setServerCode(100);
-            responseSearchListQueueSystem.setServerMessage(e+" ");
+            responseSearchListQueueSystem.setServerMessage(e + " ");
 
             return responseSearchListQueueSystem;
         }
 
 
-}
+    }
 
     /**
-     *  QueueSystem findByIdQueueSystem(long idQueueSystem);
+     * QueueSystem findByIdQueueSystem(long idQueueSystem);
+     *
      * @param idQueueSystem
      * @return ResponseSearchQueueSystem
      */
@@ -92,72 +96,62 @@ public class QueueSystemSearchInternalService {
             logger.info("Error getByIdQueueSystem response : {}", response.toString());
         }
         return response;
-}
+    }
 
     /**
      *  QueueSystem findByIdProtocol(long idProtocol);
      * @param idProtocol
      * @return
      */
-    public ResponseSearchListQueueSystem getAllByIdProtocol(long idProtocol) {
-        List<QueueSystem> findByIdProtocol = repoQueueSystem.findAllByIdProtocol(idProtocol);
+//    public ResponseEntity<List<QueueSystem>> getAllByIdProtocol(long idProtocol) {
+//        List<QueueSystem> findByIdProtocol = repoQueueSystem.findAllByIdProtocol(idProtocol);
+//
+//        ResponseSearchListQueueSystem responseSearchQueueSystem = new ResponseSearchListQueueSystem();
+//
+//        if (findByIdProtocol == null||findByIdProtocol.isEmpty()) {
+//            responseSearchQueueSystem.setQueueSystemList(null);
+//            responseSearchQueueSystem.setServerCode(100);
+//            responseSearchQueueSystem.setServerMessage("getByByIdProtocol  search");
+//
+//            logger.info("getByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
+//
+//        } else {
+//            responseSearchQueueSystem.setQueueSystemList(findByIdProtocol);
+//            responseSearchQueueSystem.setServerCode(200);
+//            responseSearchQueueSystem.setServerMessage(" getByByIdProtocol found");
+//            logger.info("Error getByByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
+//        }
+//        return responseSearchQueueSystem;
+//    }
 
-        ResponseSearchListQueueSystem responseSearchQueueSystem = new ResponseSearchListQueueSystem();
-
-        if (findByIdProtocol == null||findByIdProtocol.isEmpty()) {
-            responseSearchQueueSystem.setQueueSystemList(null);
-            responseSearchQueueSystem.setServerCode(100);
-            responseSearchQueueSystem.setServerMessage("getByByIdProtocol  search");
-
-            logger.info("getByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
-
+    /**
+     * QueueSystem findByIdPersonal(long idPersonal);
+     *
+     * @param idPersonal
+     * @return
+     */
+    public ResponseEntity<List<QueueSystem>> getAllByIdPersonal(long idPersonal) {
+        List<QueueSystem> queueSystemList = repoQueueSystem.findAllByIdPersonal(idPersonal);
+        if (queueSystemList == null || queueSystemList.isEmpty()) {
+            logger.info("{} not found for {} : {}", "Queue", "idPersonal", idPersonal);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         } else {
-            responseSearchQueueSystem.setQueueSystemList(findByIdProtocol);
-            responseSearchQueueSystem.setServerCode(200);
-            responseSearchQueueSystem.setServerMessage(" getByByIdProtocol found");
-            logger.info("Error getByByIdProtocol responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
+            logger.info("{}", "queue system result sending");
+            return new ResponseEntity<>(queueSystemList, HttpStatus.OK);
         }
-        return responseSearchQueueSystem;
     }
 
-        /**
-         *  QueueSystem findByIdPersonal(long idPersonal);
-         * @param idPersonal
-         * @return
-         */
-        public ResponseSearchListQueueSystem getAllByIdPersonal(long idPersonal){
-            List<QueueSystem> findByIdPersonal = repoQueueSystem.findAllByIdPersonal(idPersonal);
 
-            ResponseSearchListQueueSystem responseSearchQueueSystem = new ResponseSearchListQueueSystem();
+    public ResponseEntity<Integer> getCount(long idPersonal) {
 
-            if (findByIdPersonal == null||findByIdPersonal.isEmpty()) {
-                responseSearchQueueSystem.setQueueSystemList(null);
-                responseSearchQueueSystem.setServerCode(100);
-                responseSearchQueueSystem.setServerMessage("getIdPersonal not found");
-
-                logger.info("getByIdPersonal responseSearchQueueSystem1 : {}", responseSearchQueueSystem.toString());
-
-            } else {
-                responseSearchQueueSystem.setQueueSystemList(findByIdPersonal);
-                responseSearchQueueSystem.setServerCode(200);
-                responseSearchQueueSystem.setServerMessage(" getByIdPersonal found");
-                logger.info("Error getByIdPersonal responseSearchQueueSystem : {}", responseSearchQueueSystem.toString());
-            }
-            return responseSearchQueueSystem;
-        }
-
-
-    public ResponseQueueCount getCount(long idPersonal) {
-        ResponseQueueCount response = new ResponseQueueCount();
-        response.setServerCode(200);
-        response.setServerMessage("ok");
         int count = repoQueueSystem.countByStatusAndIdPersonal(1, idPersonal);
-        if(count==0){
-            response.setCount(0);
-        }else{
-            response.setCount(count);
+        if (count == 0) {
+            logger.info("returning queue count : {} ", 0);
+            return new ResponseEntity<>(0, HttpStatus.OK);
+        } else {
+            logger.info("returning queue count : {} ", count);
+            return new ResponseEntity<>(count, HttpStatus.OK);
         }
-            return response;
     }
 }
 

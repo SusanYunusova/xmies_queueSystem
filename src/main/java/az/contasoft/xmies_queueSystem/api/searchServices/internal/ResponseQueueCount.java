@@ -1,5 +1,6 @@
 package az.contasoft.xmies_queueSystem.api.searchServices.internal;
 
+@Deprecated
 public class ResponseQueueCount {
     private int serverCode;
     private String serverMessage;

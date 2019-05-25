@@ -4,6 +4,7 @@ import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 
 import java.util.List;
 
+@Deprecated
 public class ResponseSearchListQueueSystem {
     private int serverCode;
     private String serverMessage;

@@ -2,6 +2,7 @@ package az.contasoft.xmies_queueSystem.api.crudServices.internal;
 
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 
+@Deprecated
 public class QueueSystemResponse {
     private int serverCode;
     private String serverMessage;

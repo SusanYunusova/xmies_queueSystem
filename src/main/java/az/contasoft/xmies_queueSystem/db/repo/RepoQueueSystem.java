@@ -7,22 +7,7 @@ import java.util.List;
 
 public interface RepoQueueSystem extends CrudRepository<QueueSystem,Long> {
 
-    /*
-    private long idQueueSystem;//idnovbe sistemi
-    private Date enteredDate;
-    private long idProtocol;
-    private long idDeparment;
-    private long idPersonal;
-    private long QueueNo;//sira nomresi
-    private  long isDelete;
-
-     */
-
-
-
     List<QueueSystem> findAll();
-
-
     QueueSystem findByIdQueueSystem(long idQueueSystem);
     QueueSystem findByIdQueueSystemAndStatus(long idQueueSystem,int status);
     List<QueueSystem> findAllByIdProtocol(long idProtocol);

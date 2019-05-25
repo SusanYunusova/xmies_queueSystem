@@ -4,9 +4,11 @@ import az.contasoft.xmies_queueSystem.api.crudServices.internal.QueueSystemRespo
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.SaveQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.UpdateQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.api.crudServices.internalService.QueueSystemCrudInternalService;
+import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,14 +21,14 @@ public class QueueSystemCrudServiceController {
     QueueSystemCrudInternalService queueSystemCrudInternalService;
 
     @PostMapping("/add")
-    public QueueSystemResponse saveQueueSystem(@RequestBody SaveQueueSystemRequest saveQueueSystemRequest) {
+    public ResponseEntity<QueueSystem> saveQueueSystem(@RequestBody SaveQueueSystemRequest saveQueueSystemRequest) {
         logger.info("xmies_queueSystem->add->request : {}" + saveQueueSystemRequest.toString());
         return queueSystemCrudInternalService.saveQueueSystem(saveQueueSystemRequest);
 
     }
 
     @PostMapping("/update")
-    public QueueSystemResponse updateQueueSystem(@RequestBody UpdateQueueSystemRequest updateQueueSystemRequest) {
+    public ResponseEntity<QueueSystem> updateQueueSystem(@RequestBody UpdateQueueSystemRequest updateQueueSystemRequest) {
 
         logger.info("xmies_queueSystem->update->request : {}" + updateQueueSystemRequest.toString());
 
