@@ -50,9 +50,9 @@ public class QueueSystemSearchServicesController {
 //    }
 
     @GetMapping("/getIdPersonal/{idPersonal}")
-    public ResponseEntity<List<QueueSystem>> getAllByIdPersonal(@PathVariable("idPersonal") long idPersonal) {
+    public ResponseEntity<List<QueueSystem>> getAllByIdPersonal(@PathVariable("idPersonal") long idPersonal,@PathVariable("idProtocol") long idProtocol) {
 
-        return queueSystemSearchInternalService.getAllByIdPersonal(idPersonal);
+        return queueSystemSearchInternalService.getAllByIdPersonalAndIdProtocol(idPersonal,idProtocol);
     }
 
 

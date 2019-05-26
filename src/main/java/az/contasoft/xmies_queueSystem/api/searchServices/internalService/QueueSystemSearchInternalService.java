@@ -1,7 +1,6 @@
 package az.contasoft.xmies_queueSystem.api.searchServices.internalService;
 
 
-import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseQueueCount;
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchListQueueSystem;
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchQueueSystem;
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
@@ -130,11 +129,12 @@ public class QueueSystemSearchInternalService {
      * @param idPersonal
      * @return
      */
-    public ResponseEntity<List<QueueSystem>> getAllByIdPersonal(long idPersonal) {
-        List<QueueSystem> queueSystemList = repoQueueSystem.findAllByIdPersonal(idPersonal);
-        if (queueSystemList == null || queueSystemList.isEmpty()) {
+    public ResponseEntity<List<QueueSystem>> getAllByIdPersonalAndIdProtocol(long idPersonal, long idProtocol) {
+        List<QueueSystem> queueSystemList = repoQueueSystem.findByIdPersonalAndIdProtocol(idPersonal,idProtocol);
+        //todo try
+         if (queueSystemList == null || queueSystemList.isEmpty()) {
             logger.info("{} not found for {} : {}", "Queue", "idPersonal", idPersonal);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         } else {
             logger.info("{}", "queue system result sending");
             return new ResponseEntity<>(queueSystemList, HttpStatus.OK);
