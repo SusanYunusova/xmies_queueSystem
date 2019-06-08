@@ -6,6 +6,7 @@ import az.contasoft.xmies_queueSystem.api.crudServices.internal.SaveQueueSystemR
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.UpdateQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 import az.contasoft.xmies_queueSystem.db.repo.RepoQueueSystem;
+import az.contasoft.xmies_queueSystem.util.HazelCastUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,14 @@ public class QueueSystemCrudInternalService {
             queueSystem.setIdProtocol(saveQueueSystemRequest.getIdProtocol());
             queueSystem.setStatus(1);
             QueueSystem queueSystemLast = repoQueueSystem.findTopByStatusAndIdPersonalOrderByIdQueueSystemDesc(1, saveQueueSystemRequest.getIdPersonal());
-//todo mellim verenin ustune 1 gelib sonra save edirik
             if (queueSystemLast != null) {
                 queueSystem.setQueueNo(queueSystemLast.getQueueNo() + 1);
             } else {
                 queueSystem.setQueueNo(1);
             }
             queueSystem = repoQueueSystem.save(queueSystem);
+            HazelCastUtility.addOrUpdatePersonalToHazelCast(queueSystem);
+
             logger.info("{} response data : {}", "Queue system save ", queueSystem.toString());
             return new ResponseEntity<>(queueSystem, HttpStatus.OK);
 
@@ -61,6 +63,7 @@ public class QueueSystemCrudInternalService {
                 queue.setEnteredDate(updateQueueSystemRequest.getEnteredDate());
 
                 queue = repoQueueSystem.save(queue);
+                HazelCastUtility.addOrUpdatePersonalToHazelCast(queue);
                 logger.info("updateQueue response : {}", updateQueueSystemRequest.toString());
                 return new ResponseEntity<>(queue, HttpStatus.OK);
             } else {
@@ -74,30 +77,27 @@ public class QueueSystemCrudInternalService {
     }
 
 
-    public QueueSystemResponse deleteIdQueueSystem(long idQueueSystem) {
-        QueueSystemResponse queueSystemResponse = new QueueSystemResponse();
+    public ResponseEntity<String> deleteIdQueueSystem(long idQueueSystem) {
         try {
             QueueSystem queue = repoQueueSystem.findByIdQueueSystemAndStatus(idQueueSystem, 0);
 
             if (queue == null) {
 
-                queueSystemResponse.setServerMessage("Queue not found");
-                queueSystemResponse.setServerCode(230);
-
+               return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
 
             } else {
                 queue.setStatus(1);
                 repoQueueSystem.save(queue);
-                queueSystemResponse.setServerCode(200);
-                queueSystemResponse.setServerMessage("OK queue is deleted");
+                HazelCastUtility.deletePersonalFromHazelCast(idQueueSystem);
+               return new ResponseEntity<>("deleted",HttpStatus.OK);
 
 
             }
         } catch (Exception e) {
-            queueSystemResponse.setServerCode(100);
-            queueSystemResponse.setServerMessage("Error patient deleting : " + e);
+
             logger.error("Error delete : {}", e);
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return queueSystemResponse;
+
     }
 }

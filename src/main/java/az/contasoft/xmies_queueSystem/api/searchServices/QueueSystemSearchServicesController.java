@@ -2,7 +2,6 @@ package az.contasoft.xmies_queueSystem.api.searchServices;
 
 
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchListQueueSystem;
-import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchQueueSystem;
 import az.contasoft.xmies_queueSystem.api.searchServices.internalService.QueueSystemSearchInternalService;
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 import org.slf4j.Logger;
@@ -35,7 +34,7 @@ public class QueueSystemSearchServicesController {
     }
 
     @GetMapping("/getIdQueueSystem/{idQueueSystem}")
-    public ResponseSearchQueueSystem getByIdQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem) {
+    public ResponseEntity<QueueSystem> getByIdQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem) {
         logger.info("search -> controller -> request : {}", idQueueSystem);
 
 

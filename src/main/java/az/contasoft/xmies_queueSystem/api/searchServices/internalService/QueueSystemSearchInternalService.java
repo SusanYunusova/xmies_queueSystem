@@ -76,25 +76,22 @@ public class QueueSystemSearchInternalService {
      * @return ResponseSearchQueueSystem
      */
 
-    public ResponseSearchQueueSystem getByIdQueueSystem(long idQueueSystem) {
-        QueueSystem findByIdQueueSystem = repoQueueSystem.findByIdQueueSystem(idQueueSystem);
+    public ResponseEntity<QueueSystem> getByIdQueueSystem(long idQueueSystem) {
+        QueueSystem queueSystem = repoQueueSystem.findByIdQueueSystem(idQueueSystem);
 
-        ResponseSearchQueueSystem response = new ResponseSearchQueueSystem();
 
-        if (findByIdQueueSystem == null) {
-            response.setQueueSystem(null);
-            response.setServerCode(100);
-            response.setServerMessage("getByIdQueueSystem  search");
+        if (queueSystem == null) {
 
-            logger.info("getByIdQueueSystem response : {}", response.toString());
+
+            logger.info("getByIdQueueSystem response : {}","no content");
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
 
         } else {
-            response.setQueueSystem(findByIdQueueSystem);
-            response.setServerCode(200);
-            response.setServerMessage(" getByIdQueueSystem found");
-            logger.info("Error getByIdQueueSystem response : {}", response.toString());
+
+            logger.info("Error getByIdQueueSystem response : {}", "tapildiiii");
+            return new ResponseEntity<>(queueSystem,HttpStatus.OK);
         }
-        return response;
+
     }
 
     /**
