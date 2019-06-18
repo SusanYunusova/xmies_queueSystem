@@ -1,6 +1,5 @@
 package az.contasoft.xmies_queueSystem.api.crudServices;
 
-import az.contasoft.xmies_queueSystem.api.crudServices.internal.QueueSystemResponse;
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.SaveQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.UpdateQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.api.crudServices.internalService.QueueSystemCrudInternalService;
@@ -44,7 +43,7 @@ public class QueueSystemCrudServiceController {
 //    }
 
     @GetMapping("/delete/{idQueueSystem}")
-    public QueueSystemResponse deleteQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem){
+    public ResponseEntity<String> deleteQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem){
 
         return queueSystemCrudInternalService.deleteIdQueueSystem(idQueueSystem);
     }

@@ -1,7 +1,6 @@
 package az.contasoft.xmies_queueSystem.api.crudServices.internalService;
 
 
-import az.contasoft.xmies_queueSystem.api.crudServices.internal.QueueSystemResponse;
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.SaveQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.api.crudServices.internal.UpdateQueueSystemRequest;
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
@@ -19,6 +18,9 @@ public class QueueSystemCrudInternalService {
 
     @Autowired
     RepoQueueSystem repoQueueSystem;
+
+    @Autowired
+    HazelCastUtility hazelCastUtility;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -38,7 +40,7 @@ public class QueueSystemCrudInternalService {
                 queueSystem.setQueueNo(1);
             }
             queueSystem = repoQueueSystem.save(queueSystem);
-            HazelCastUtility.addOrUpdatePersonalToHazelCast(queueSystem);
+            hazelCastUtility.addOrUpdateQueueSystemToHazelCast(queueSystem);
 
             logger.info("{} response data : {}", "Queue system save ", queueSystem.toString());
             return new ResponseEntity<>(queueSystem, HttpStatus.OK);
@@ -63,7 +65,7 @@ public class QueueSystemCrudInternalService {
                 queue.setEnteredDate(updateQueueSystemRequest.getEnteredDate());
 
                 queue = repoQueueSystem.save(queue);
-                HazelCastUtility.addOrUpdatePersonalToHazelCast(queue);
+                hazelCastUtility.addOrUpdateQueueSystemToHazelCast(queue);
                 logger.info("updateQueue response : {}", updateQueueSystemRequest.toString());
                 return new ResponseEntity<>(queue, HttpStatus.OK);
             } else {
@@ -88,7 +90,7 @@ public class QueueSystemCrudInternalService {
             } else {
                 queue.setStatus(1);
                 repoQueueSystem.save(queue);
-                HazelCastUtility.deletePersonalFromHazelCast(idQueueSystem);
+                hazelCastUtility.deleteQueueSystemFromHazelCast(idQueueSystem);
                return new ResponseEntity<>("deleted",HttpStatus.OK);
 
 

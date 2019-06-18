@@ -5,6 +5,7 @@ import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearch
 import az.contasoft.xmies_queueSystem.api.searchServices.internal.ResponseSearchQueueSystem;
 import az.contasoft.xmies_queueSystem.db.entity.QueueSystem;
 import az.contasoft.xmies_queueSystem.db.repo.RepoQueueSystem;
+import az.contasoft.xmies_queueSystem.util.HazelCastUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -20,50 +22,31 @@ public class QueueSystemSearchInternalService {
     @Autowired
     RepoQueueSystem repoQueueSystem;
 
+    @Autowired
+    HazelCastUtility hazelCastUtility;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-/*
 
-    List<QueueSystem> findAll();
-
-
-    QueueSystem findByIdQueueSystem(long idQueueSystem);
-    QueueSystem findByIdProtocol(long idProtocol);
-    QueueSystem findByIdPersonal(long idPersonal);
- */
 
     /**
      * List<QueueSystem> findAll();
      *
      * @return ResponseSearchListQueueSystem
      */
-    public ResponseSearchListQueueSystem getAll() {
-        ResponseSearchListQueueSystem responseSearchListQueueSystem = new ResponseSearchListQueueSystem();
-        logger.info("search ALL ResponseSearchListQueueSystem : {}", responseSearchListQueueSystem.toString());
+    public ResponseEntity<List<QueueSystem>> getAll(Date date) {
         try {
-            List<QueueSystem> queueSystemList = repoQueueSystem.findAll();
+            List<QueueSystem> queueSystemList = repoQueueSystem.findAllByEnteredDate(date);
 
             if (queueSystemList == null || queueSystemList.isEmpty()) {
-                responseSearchListQueueSystem.setQueueSystemList(null);
-                responseSearchListQueueSystem.setServerCode(210);
-                responseSearchListQueueSystem.setServerMessage("responseSearchListQueueSystem not found");
-
-                logger.info("search responseSearchListQueueSystem : {}", responseSearchListQueueSystem.toString());
+                logger.info("{} not found for {} : {}","Get All By Date","date",date);
+                return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
             } else {
-                responseSearchListQueueSystem.setQueueSystemList(queueSystemList);
-                responseSearchListQueueSystem.setServerCode(200);
-                responseSearchListQueueSystem.setServerMessage("responseSearchListQueueSystem found");
 
-                logger.info("search responseSearchListQueueSystem : {}", responseSearchListQueueSystem.toString());
+                return new ResponseEntity<>(queueSystemList,HttpStatus.OK);
             }
-            return responseSearchListQueueSystem;
-
-
         } catch (Exception e) {
             logger.info("error getting ALL responseSearchListQueueSystem : {}", e);
-            responseSearchListQueueSystem.setServerCode(100);
-            responseSearchListQueueSystem.setServerMessage(e + " ");
-
-            return responseSearchListQueueSystem;
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
 
