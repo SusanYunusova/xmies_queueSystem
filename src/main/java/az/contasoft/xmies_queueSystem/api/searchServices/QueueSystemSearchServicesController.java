@@ -77,13 +77,14 @@ public class QueueSystemSearchServicesController {
      *  '----------------'  '----------------'
      * @return
      */
-    @GetMapping("/getAll")
-    public ResponseEntity<List<QueueSystem>> getAll() {
-        logger.info("search -> controller -> All request : {}");
+//    @GetMapping("/getAll")
+//    public ResponseEntity<List<QueueSystem>> getAll() {
+//        logger.info("search -> controller -> All request : {}");
+//
+//        return queueSystemSearchInternalService.getAll();
+//
+//    }
 
-        return queueSystemSearchInternalService.getAll();
-
-    }
 
     @GetMapping("/getIdQueueSystem/{idQueueSystem}")
     public ResponseEntity<QueueSystem> getByIdQueueSystem(@PathVariable("idQueueSystem") long idQueueSystem) {
